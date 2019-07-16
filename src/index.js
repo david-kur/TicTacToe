@@ -48,6 +48,7 @@ function Game() {
   const [history, setHistory] = useState([{ squares: Array(9).fill(null) }]);
   const [stepNumber, setStepNumber] = useState(0);
   const [XisNext, setNext] = useState(true);
+  const [sortDesc, setSortDesc] = useState(true);
   const current = history[stepNumber];
   const winner = calculateWinner(current.squares);
 
@@ -98,6 +99,10 @@ function Game() {
     setNext(step % 2 === 0);
   }
 
+  function sortHistory() {
+    setSortDesc(!sortDesc);
+  }
+
   return (
     <div className="game">
       <div className="game-board">
@@ -105,7 +110,10 @@ function Game() {
       </div>
       <div className="game-info">
         <div>{status}</div>
-        <ol>{moves}</ol>
+        <button onClick={sortHistory}>
+          Order of moves: <b>{sortDesc ? 'Descending' : 'Ascending'}</b>
+        </button>
+        <ol>{sortDesc ? moves : moves.reverse()}</ol>
       </div>
     </div>
   );
