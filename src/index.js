@@ -70,6 +70,8 @@ function Game() {
 
   const status = winner
     ? `Winner: ${winner.player}`
+    : stepNumber === 9
+    ? 'Draw'
     : 'Next player: ' + (XisNext ? 'X' : 'O');
 
   function handleClick(i) {
