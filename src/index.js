@@ -52,7 +52,10 @@ function Game() {
   const winner = calculateWinner(current.squares);
 
   const moves = history.map((step, move) => {
-    const desc = move ? 'Go to move #' + move : 'Go to game start';
+    const { location } = history[move];
+    const desc = move
+      ? `Go to move #${move} : Col ${location[0]} - Row ${location[1]}`
+      : 'Go to game start';
     return (
       <li key={move}>
         <button onClick={() => jumpTo(move)}>
@@ -67,6 +70,17 @@ function Game() {
     : 'Next player: ' + (XisNext ? 'X' : 'O');
 
   function handleClick(i) {
+    const locationMap = [
+      [1, 1],
+      [2, 1],
+      [3, 1],
+      [1, 2],
+      [2, 2],
+      [3, 2],
+      [1, 3],
+      [2, 3],
+      [3, 3]
+    ];
     const newHistory = history.slice(0, stepNumber + 1);
     const current = newHistory[newHistory.length - 1];
     const squares = current.squares.slice();
@@ -74,7 +88,7 @@ function Game() {
       return;
     }
     squares[i] = XisNext ? 'X' : 'O';
-    setHistory(newHistory.concat([{ squares }]));
+    setHistory(newHistory.concat([{ squares, location: locationMap[i] }]));
     setStepNumber(newHistory.length);
     setNext(!XisNext);
   }
