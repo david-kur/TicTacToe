@@ -12,28 +12,36 @@ function Square({ value, onClick }) {
 
 function Board({ squares, onClick }) {
   function renderSquare(i) {
-    return <Square value={squares[i]} onClick={() => onClick(i)} />;
+    return (
+      <Square
+        key={`square${i}`}
+        value={squares[i]}
+        onClick={() => onClick(i)}
+      />
+    );
   }
 
-  return (
-    <div>
-      <div className="board-row">
-        {renderSquare(0)}
-        {renderSquare(1)}
-        {renderSquare(2)}
-      </div>
-      <div className="board-row">
-        {renderSquare(3)}
-        {renderSquare(4)}
-        {renderSquare(5)}
-      </div>
-      <div className="board-row">
-        {renderSquare(6)}
-        {renderSquare(7)}
-        {renderSquare(8)}
-      </div>
-    </div>
-  );
+  function renderSquares(i, size) {
+    let squares = [];
+    for (let j = i * size; j < i * size + size; j++) {
+      squares.push(renderSquare(j));
+    }
+    return squares;
+  }
+
+  function renderBoard(size) {
+    let board = [];
+    for (let i = 0; i < size; i++) {
+      board.push(
+        <div key={i} className="board-row">
+          {renderSquares(i, size)}
+        </div>
+      );
+    }
+    return board;
+  }
+
+  return <div>{renderBoard(3)}</div>;
 }
 
 function Game() {
@@ -47,7 +55,9 @@ function Game() {
     const desc = move ? 'Go to move #' + move : 'Go to game start';
     return (
       <li key={move}>
-        <button onClick={() => jumpTo(move)}>{desc}</button>
+        <button onClick={() => jumpTo(move)}>
+          {stepNumber === move ? <b>{desc}</b> : desc}
+        </button>
       </li>
     );
   });
